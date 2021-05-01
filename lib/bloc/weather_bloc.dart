@@ -7,30 +7,39 @@ import 'package:weather_flutter/repo/weather_repo.dart';
 class WeatherBloc
 {
   weatherRepo repo=weatherRepo();
-  final List<WeatherModel> previouslyViewed=new List();
+  static List<WeatherModel> prev=new List();
+  final _list = BehaviorSubject<List<WeatherModel>>(); //private variable
+  Observable<List<WeatherModel>> get list => _list.stream;
   final _weatherFetcher=PublishSubject<WeatherModel>();
-  StreamController<WeatherModel> sController=StreamController<WeatherModel>();
-  Sink<WeatherModel> get WeatherModelSink=>sController.sink;
-  Stream<WeatherModel> get WeatherModelStream=>sController.stream;
+  StreamController<List<WeatherModel>> sController=StreamController<List<WeatherModel>>();
+  final _controller = StreamController<List<WeatherModel>>();
+  Stream<List<WeatherModel>> get WeatherStream => _controller.stream;
+  //Sink<List<WeatherModel>> get WeatherModelSink=>sController.sink;
+  //Stream<List<WeatherModel>> get WeatherModelStream=>sController.stream;
+  final _listWeatherFetcher=PublishSubject<List<WeatherModel>>();
   Observable<WeatherModel> get weather=>_weatherFetcher.stream;
+  Observable<List<WeatherModel>> get weatherFetch=>_listWeatherFetcher.stream;
 
+  void submitQuery(String query) async {
+    // 1
+    final results = prev;
+    _controller.sink.add(results);
+  }
+  List<WeatherModel> previouslySeenList;
   fetchWeather(String city) async
   {
     WeatherModel weatherModel=await repo.getWeather(city);
     _weatherFetcher.sink.add(weatherModel);
+    prev.add(weatherModel);
+    _list.sink.add(prev);
   }
-  previousData()
+  previousResult(String city) async
   {
-    sController.stream.listen(onWatched);
+    WeatherModel weatherModel=await repo.getWeather(city);
+    prev.add(weatherModel);
+    _list.sink.add(prev);
   }
 
-  onWatched(WeatherModel pre)
-  {
-    this.previouslyViewed.add(pre);
-  }
-  dispose() {
-    _weatherFetcher.close();
-  }
 
 }
 final weatherBloc = WeatherBloc();
