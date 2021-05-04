@@ -157,28 +157,34 @@ return Scaffold(
         child: Container(
           child: Column(
             children: [
-              Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                  child: RichText(
-                    text: TextSpan(
-                      style: Theme.of(context).textTheme.body1,
-                      children: [
-                        WidgetSpan(
-                          child: Icon(Icons.wb_sunny_outlined,color: Colors.white,),
-                        ),
+              SizedBox(
+                height:22,
+                child: Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
+                    child: RichText(
+                      text: TextSpan(
+                        style: Theme.of(context).textTheme.body1,
+                        children: [
+                          WidgetSpan(
+                            child: Icon(Icons.cloud_queue,color: Colors.white,),
+                          ),
 
-                        TextSpan(text: data.weather[0].main,style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Paci',
-                            fontSize: 20)),
-                      ],
-                    ),
-                  )
+                          TextSpan(text: "  "+data.weather[0].main,style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Paci',
+                              fontSize: 20)),
+                        ],
+                      ),
+                    )
+                ),
               ),
               SizedBox(height: 1,),
-              Container(
-                child: Text(Home.roundUpAbsolute(data.main.temp-272.5)+"°",style: TextStyle(color: Colors.white,fontSize: 80,fontWeight: FontWeight.bold,letterSpacing: 2,fontFamily: 'Paci'),),
+              SizedBox(
+                height: 95,
+                child: Container(
+                  child: Text(Home.roundUpAbsolute(data.main.temp-272.5)+"°",style: TextStyle(color: Colors.white,fontSize: 80,fontWeight: FontWeight.bold,letterSpacing: 2,fontFamily: 'Paci'),),
+                ),
               ),
               SizedBox(height: 1,),
               Container(
@@ -209,8 +215,7 @@ return Scaffold(
 
                       },
                       child: Container(
-
-                          margin: EdgeInsets.fromLTRB(28, 415, 10, 0),
+                          margin: EdgeInsets.fromLTRB(28, MediaQuery.of(context).size.height/2, 10, 0),
                           child: RichText(
                             text: TextSpan(
                               children: [
@@ -235,6 +240,7 @@ return Scaffold(
                       ),
                     ),
                      Container(
+
                       decoration: BoxDecoration(
                       color: Colors.transparent,
                        borderRadius: BorderRadius.all(
@@ -248,7 +254,7 @@ return Scaffold(
                       offset: Offset(3, 5),
                      ),
                       ],),
-                       margin: EdgeInsets.fromLTRB(20, 415, 10, 0),
+                       margin: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height/2, 10, 0),
                        child: FloatingActionButton(
                          elevation: 54.0,
 
@@ -263,10 +269,10 @@ return Scaffold(
   ],
   ),
   ),
+
               Expanded(
                 child: Container(
                   margin: EdgeInsets.only(left: 28),
-                  height: 500,
                   child: ListView.builder(itemCount:datta.length ,
                             itemBuilder: (BuildContext context,int index)
                     {
