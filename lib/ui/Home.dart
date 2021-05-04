@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:icon_shadow/icon_shadow.dart';
 import 'package:weather_flutter/PreviouslyViewed.dart';
 import 'package:weather_flutter/bloc/weather_bloc.dart';
 import 'package:weather_flutter/model/weather_model.dart';
@@ -258,7 +259,16 @@ return Scaffold(
                        child: FloatingActionButton(
                          elevation: 54.0,
 
-                        child: Icon(Icons.add,size: 40,color: Colors.white,),
+                        child: Container(
+
+                            child: IconShadowWidget(
+
+                                 Icon(Icons.add,size: 40,color: Colors.white,),
+                              shadowColor: Colors.white,
+
+                            ),
+
+                        ),
                         backgroundColor: Colors.orangeAccent,
                         onPressed: () {
 
