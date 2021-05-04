@@ -14,9 +14,6 @@ PreviouslyViewedBloc()
   listingData= WeatherBloc.prev;
   _previouslyViewedController.sink.add(listingData);
 }
-
-
-
 }
 // final _postDetailController=BehaviorSubject<PostDetail>();
 // Stream<PostDetail> get postDetailStream=>_postDetailController;
