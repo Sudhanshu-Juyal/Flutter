@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:weather_flutter/PreviouslyViewed.dart';
-import 'package:weather_flutter/repo/weather_repo.dart';
 import 'package:weather_flutter/services/locator.dart';
-import 'package:weather_flutter/ui/Home.dart';
+import 'file:///D:/flutter/weather_flutter/lib/Screens/Home.dart';
 
 void main()
 {
-  setupLocator();
+   setupLocator();
   runApp(myApp());
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: Colors.transparent, // navigation bar color

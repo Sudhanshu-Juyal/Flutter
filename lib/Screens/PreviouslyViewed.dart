@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:weather_flutter/ItemWidget.dart';
-import 'package:weather_flutter/bloc/previously_viewed_bloc.dart';
 import 'package:weather_flutter/bloc/weather_bloc.dart';
-import 'package:weather_flutter/model/PreviouslyViewedModel.dart';
-import 'package:weather_flutter/model/weather_model.dart';
-import 'package:weather_flutter/repo/weather_repo.dart';
+import 'file:///D:/flutter/weather_flutter/lib/Screens/Home.dart';
 class Previous extends StatefulWidget {
   @override
   _PreviousState createState() => _PreviousState();
@@ -14,40 +10,37 @@ class _PreviousState extends State<Previous> {
 
   @override
   Widget build(BuildContext context) {
-    PreviouslyViewedBloc previouslyViewedBloc = PreviouslyViewedBloc();
-    WeatherBloc weatherBloc = WeatherBloc();
-    List<WeatherModel> weat = WeatherBloc.prev;
 
     return Scaffold(
-      appBar: AppBar(
-       backgroundColor: Colors.white,
-        elevation: 0,
-        brightness: Brightness.light,
-        actions: [
-           IconButton(icon: Icon(Icons.search,color: Colors.black,), onPressed: null),
-          PopupMenuButton<String>(
-            icon: Image.asset("assets/dots.png",color: Colors.black,),
-            onSelected: handleClick,
-            itemBuilder: (BuildContext context){
-              return {'Logout','Settings'}.map((String choice){
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),);
-              })
-                  .toList();
-            }
-            ,),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(35.0),
+        child: AppBar(
+         backgroundColor: Colors.white,
+          elevation: 0,
+          brightness: Brightness.light,
+          actions: [
+             IconButton(icon: Icon(Icons.search,color: Colors.black,), onPressed: null),
+            PopupMenuButton<String>(
+              icon: Image.asset("assets/dots.png",color: Colors.black,),
+              onSelected: handleClick,
+              itemBuilder: (BuildContext context){
+                return {'Logout','Settings'}.map((String choice){
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: Text(choice),);
+                })
+                    .toList();
+              }
+              ,),
 
-          // IconButton(icon: Icon(Icons.search,color: Colors.black,), onPressed: null)
-        ],
-         //title: Text("Previously Viewed",style: TextStyle(color: Colors.black),),
-        //
+          ],
+        ),
       ),
         body: Container(
           color: Colors.white,
           child: Column(
             children: [
-              Text("Previously Viewed",style: TextStyle(color: Colors.black,fontSize: 20,fontFamily: 'Paci'),),
+              Text("Previously Viewed",style: TextStyle(color: Colors.black,fontSize: 20,fontFamily: 'Paci',fontWeight: FontWeight.w700),),
               Expanded(
                 child: ListView.builder(
 
@@ -56,13 +49,12 @@ class _PreviousState extends State<Previous> {
                       return Card(
                        elevation: 4.5,
 
-                        margin: EdgeInsets.all(20),
+                        margin: EdgeInsets.fromLTRB(30, 15, 30, 5),
                         color: Theme
                             .of(context)
                             .cardColor,
-                        //RoundedRectangleBorder, BeveledRectangleBorder, StadiumBorder
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)
+                          borderRadius: BorderRadius.circular(15)
                         ),
                         child: Expanded(
                           child: Container(
@@ -77,7 +69,7 @@ class _PreviousState extends State<Previous> {
 
 
                             ),
-                            height: 240,
+                            height: 270,
                             width: double.infinity,
                             child: Column(
                               children:
@@ -88,9 +80,9 @@ class _PreviousState extends State<Previous> {
                                     children: [
                                       Container(
                                         width: double.infinity,
-                                        height: 150.0,
+                                        height: 180.0,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
                                             image: DecorationImage(
                                                 image: AssetImage('assets/wee.jpg'),
                                                 fit: BoxFit.cover),
@@ -98,14 +90,14 @@ class _PreviousState extends State<Previous> {
                                         ),
                                       Positioned(
                                           top: 40,
-                                          left: 20,
-                                          child: Text(WeatherBloc.prev[index].main.temp.toString()+" °",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 25,fontFamily: 'Paci'),)
+                                          left: 15,
+                                          child: Text(Home.roundUpAbsolute(WeatherBloc.prev[index].main.temp-272.5)+"°",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w900,fontSize: 55,fontFamily: 'Paci'),)
 
                                       ),
                                       Positioned(
-                                          top: 80,
-                                          left: 20,
-                                          child: Text(WeatherBloc.prev[index].name.toString(),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 25,fontFamily: 'Paci'),)
+                                          top: 104,
+                                          left: 16,
+                                          child: Text(WeatherBloc.prev[index].name.toString(),style: TextStyle(color: Colors.white,fontWeight: FontWeight.w800,fontSize: 30,fontFamily: 'Paci'),)
                                       ),
 
 
@@ -119,11 +111,11 @@ class _PreviousState extends State<Previous> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
-                                          margin: EdgeInsets.fromLTRB(20, 0, 0, 40),
-                                          child: Text("Humidity "+WeatherBloc.prev[index].main.humidity.toString()+" %",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontFamily: 'Paci'),)),
+                                          margin: EdgeInsets.fromLTRB(20, 0, 0, 30),
+                                          child: Text("Humidity: "+WeatherBloc.prev[index].main.humidity.toString()+"%",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w800,fontFamily: 'Paci',fontSize: 18),)),
                                       Container(
-                                          margin: EdgeInsets.fromLTRB(0, 0, 20, 40),
-                                          child: Text(WeatherBloc.prev[index].timezone.toString(),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontFamily: 'Paci')))
+                                          margin: EdgeInsets.fromLTRB(0, 0, 50, 30),
+                                          child: Text(WeatherBloc.prev[index].timezone.toString(),style: TextStyle(color: Colors.black,fontWeight: FontWeight.w900,fontFamily: 'Paci',fontSize: 20)))
                                     ],
                                   ),
                                 )
