@@ -25,6 +25,7 @@ class WeatherBloc
     prev.add(weatherModel);
     _list.sink.add(prev);
     repo.save(weatherModel, databaseHelper);
+    return weatherModel;
   }
 
 }

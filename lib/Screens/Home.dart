@@ -115,18 +115,18 @@ return Scaffold(
               tooltip: 'Share',
             ),
 
-            Visibility(
-              visible: show,
-              child: IconButton(
-                  icon: Icon(Icons.forward), onPressed: (){
-                    print("show is $show and city "+city.text);
-
-                     weatherBloc.previousResult(city.text,databaseHelper);
-
-              }
-
-                  ),
-            ),
+           /// Visibility(
+            //   visible: show,
+            //   child: IconButton(
+            //       icon: Icon(Icons.forward), onPressed: (){
+            //         print("show is $show and city "+city.text);
+            //      WeatherModel w=   weatherBloc.previousResult(city.text,databaseHelper);
+            //         _buildWeatherScreen(w, context, customIcon, snapshot);
+            //
+            //   }
+            //
+            //       ),
+            // ),`
             PopupMenuButton<String>(
               icon: Image.asset("assets/dots.png",color: Colors.white,),
               onSelected: handleClick,
@@ -180,24 +180,12 @@ return Scaffold(
     }
   }
 
-  @override
-  void initState() {
-  //  weatherBloc.fetchWeather("CANADA");
-    // weatherBloc.previousResult("CANADA");
-  }
+
 
   void init() {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
 
   }
 
- //  void save(WeatherModel data) async
- //  {
- //  PreviouslyViewd previouslyViewd=PreviouslyViewd(data.main.temp, data.name,data.timezone,data.main.humidity);
- // int result=await databaseHelper.inserWeather(previouslyViewd);
- // if(result!=0)
- //   {
- //     print("data saved");
- //   }
- //  }
+
 }
