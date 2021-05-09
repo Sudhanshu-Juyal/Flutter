@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:weather_flutter/Screens/SplashScreen.dart';
 import 'package:weather_flutter/services/locator.dart';
 import 'file:///D:/flutter/weather_flutter/lib/Screens/Home.dart';
 
@@ -23,8 +24,15 @@ class _myAppState extends State<myApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(),
-      home: Home(),
+      theme: ThemeData(
+        primaryColor: Colors.white,
+          inputDecorationTheme: const InputDecorationTheme(
+            labelStyle: TextStyle(color: Colors.white),
+            hintStyle: TextStyle(color: Colors.white),
+          )),
+
+
+      home: SplashScreen(),
     );
   }
 }

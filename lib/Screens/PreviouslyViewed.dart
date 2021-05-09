@@ -36,7 +36,7 @@ class _PreviousState extends State<Previous> {
               height: 0.0,
               child: Text('No Previous Data'));
         }
-        return Container(child: Text("hello"),);
+        return Container(child: Text(""),);
     }
 
         );

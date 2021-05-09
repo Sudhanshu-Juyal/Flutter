@@ -1,10 +1,9 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:weather_flutter/Screens/CurrentWeather.dart';
 import 'file:///D:/flutter/weather_flutter/lib/Screens/PreviouslyViewed.dart';
-import 'package:weather_flutter/Screens/CustomData.dart';
-import 'package:weather_flutter/Screens/ImageContainer.dart';
 import 'package:weather_flutter/Screens/SearchWeather.dart';
-import 'package:weather_flutter/Screens/WeatherContainer.dart';
 import 'package:weather_flutter/bloc/weather_bloc.dart';
 import 'package:weather_flutter/model/PreviouslyViewedModel.dart';
 import 'package:weather_flutter/model/weather_model.dart';
@@ -39,6 +38,11 @@ class _HomeState extends State<Home>
    });
     });
   }
+  int selectedItemIndex=0;
+  int _currentIndex=0;
+  int _page = 0;
+  GlobalKey _bottomNavigationKey = GlobalKey();
+
   @override
   Widget build(BuildContext context)
   {
@@ -51,7 +55,7 @@ class _HomeState extends State<Home>
         stream: weatherBloc.weather,
         builder: (context, AsyncSnapshot<WeatherModel> snapshot) {
           if (snapshot.hasData) {
-            return _buildWeatherScreen(snapshot.data,context,customIcon,snapshot);
+            return _buildWeatherScreen(snapshot.data,context,customIcon,snapshot,selectedItemIndex);
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
           }
@@ -61,115 +65,37 @@ class _HomeState extends State<Home>
 
   }
 
-  Scaffold _buildWeatherScreen(WeatherModel data, BuildContext context, Icon customIcon, AsyncSnapshot<WeatherModel> snapshot)
+  Scaffold _buildWeatherScreen(WeatherModel data, BuildContext context, Icon customIcon, AsyncSnapshot<WeatherModel> snapshot, int selectedItemIndex)
   {
-return Scaffold(
-  resizeToAvoidBottomInset: false,
-  body: Stack(
-    children: <Widget>[
-     ImageContainer(),
-      Positioned(
-        child: AppBar(
-          title: customSearchBar,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          actions: <Widget>[
-            IconButton(
-              icon: customIcon,
-              onPressed: () {
-                print("tapped");
-                setState(()
-                {
-                  if(this.customIcon.icon==Icons.search)
-                    {
-                      show=true;
-                        this.customIcon=Icon(Icons.cancel);
-                        this.customSearchBar=TextField(
-                          onSubmitted: (value)
-                          {
-                            print("search");
-                          },
-                        controller: city,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Search"
-                        ),
-                        textInputAction:TextInputAction.search,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
+    final _tabs=[CurrentWeather(data,context,customIcon,snapshot,selectedItemIndex),Previous(databaseHelper)];
 
-                        ),
-                      );
-                    }
-                  else
-                    {
-                      show=false;
-                      print("tapping else");
-                      this.customIcon=Icon(Icons.search);
-                   // weatherBloc.previousResult(cityText,databaseHelper);
-                   this.customSearchBar=Text("");
-                    }
-                });
-              },
-              tooltip: 'Share',
-            ),
-
-           /// Visibility(
-            //   visible: show,
-            //   child: IconButton(
-            //       icon: Icon(Icons.forward), onPressed: (){
-            //         print("show is $show and city "+city.text);
-            //      WeatherModel w=   weatherBloc.previousResult(city.text,databaseHelper);
-            //         _buildWeatherScreen(w, context, customIcon, snapshot);
-            //
-            //   }
-            //
-            //       ),
-            // ),`
-            PopupMenuButton<String>(
-              icon: Image.asset("assets/dots.png",color: Colors.white,),
-              onSelected: handleClick,
-              itemBuilder: (BuildContext context){
-                return {'Previously viewed','Item2'}.map((String choice){
-                  return PopupMenuItem<String>(
-                    value: choice,
-                    child: Text(choice),);
-                })
-                    .toList();
-              }
-              ,),
-
-
-
-          ],
-          leading: IconButton(
-            icon: Icon(
-
-
-              Icons.arrow_back,color: Colors.white,),
-            onPressed: (){
-
-              print("back pressed");
-
-            },
-          ),
-        ),
+    return Scaffold(
+      bottomNavigationBar: CurvedNavigationBar(
+        key: _bottomNavigationKey,
+        index: 0,
+        height: 50.0,
+        items: <Widget>[
+          Icon(Icons.add, size: 30,color: Color(0xff7340bf),),
+          Icon(Icons.list, size: 30,color: Color(0xff7340bf),),
+        ],
+        color: Colors.white,
+        buttonBackgroundColor: Colors.white,
+        backgroundColor: Colors.black,
+        animationCurve: Curves.easeInOut,
+        animationDuration: Duration(milliseconds: 1000),
+        onTap: (index) {
+          setState(() {
+            _page = index;
+          });
+        },
+        letIndexChange: (index) => true,
       ),
-      Positioned(
-        left:MediaQuery.of(context).size.width/2.8,
-        top: 110,
-        child: WeatherContainer(data,context,customIcon,snapshot)
-      ),
-      Positioned(
-        child: CustomData(),
-      )
+      body:_tabs[_page]
 
-    ],
-  ),
-);
+    );
 
   }
+
   void handleClick(String value) {
     switch (value) {
       case 'Previously viewed':
