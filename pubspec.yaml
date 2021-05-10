@@ -33,6 +33,7 @@ dependencies:
   auto_size_text: ^2.1.0
   get_it: ^7.0.0
   rxdart: ^0.22.0
+  connectivity: ^3.0.3
   sizer: ^2.0.13
   curved_navigation_bar: ^0.3.7
   icon_shadow: ^1.0.1

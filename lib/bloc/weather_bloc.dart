@@ -18,13 +18,22 @@ class WeatherBloc
   Observable<WeatherModel> get weather=>_weatherFetcher.stream;
 
   List<WeatherModel> previouslySeenList;
-  previousResult(String city, DatabaseHelper databaseHelper) async
+  // previousResult(String city, DatabaseHelper databaseHelper) async
+  // {
+  //   WeatherModel weatherModel=await repo.getWeather(city);
+  //   _weatherFetcher.sink.add(weatherModel);
+  //   prev.add(weatherModel);
+  //   _list.sink.add(prev);
+  //   repo.save(weatherModel, databaseHelper);
+  //   return weatherModel;
+  // }
+  previousResulWeather(String city) async
   {
     WeatherModel weatherModel=await repo.getWeather(city);
     _weatherFetcher.sink.add(weatherModel);
     prev.add(weatherModel);
     _list.sink.add(prev);
-    repo.save(weatherModel, databaseHelper);
+    repo.saving(weatherModel);
     return weatherModel;
   }
 

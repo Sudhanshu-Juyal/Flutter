@@ -8,7 +8,7 @@ String _name;
 String _timezone;
 String _humidity;
 
-PreviouslyViewd(this._temp,this._name,this._timezone,this._humidity);
+ PreviouslyViewd(this._temp,this._name,this._timezone,this._humidity);
 PreviouslyViewd.withName(this._id,this._temp,this._name,this._timezone,this._humidity);
 String get temp=>_temp;
 String get name=>_name;

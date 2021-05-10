@@ -4,26 +4,37 @@ import 'package:weather_flutter/model/PreviouslyViewedModel.dart';
 import 'dart:convert';
 
 import 'package:weather_flutter/model/weather_model.dart';
+import 'package:weather_flutter/services/database_services.dart';
 import 'package:weather_flutter/services/locator.dart';
 import 'package:weather_flutter/services/weather_services.dart';
 import 'package:weather_flutter/utils/database_helper.dart';
 class weatherRepo
 {
   var weatherService=locator<WeatherServices>();
+  var databaseService=locator<DatabaseServices>();
   Future<WeatherModel> getWeather(String city) async
   {
     WeatherModel weatherModel=await weatherService.getWeatherList(city);
     return weatherModel;
   }
 
-  Future<List<PreviouslyViewd>> getPreviousViewed(DatabaseHelper helper) async
+  Future<List<PreviouslyViewd>> getPreviousViewed() async
   {
 
-    List<PreviouslyViewd> previousViewListFuture= await weatherService.getPreviousViewed(helper);
-    return previousViewListFuture;
+    List<PreviouslyViewd> previousViewListFuture= await databaseService.getPreviousViewed();
+    if(!previousViewListFuture.isEmpty)
+      {
+        return previousViewListFuture;
+
+      }
   }
-  save(WeatherModel weatherModel,DatabaseHelper helper) async
+  // save(WeatherModel weatherModel,DatabaseHelper helper) async
+  // {
+  //   weatherService.save(weatherModel,helper);
+  // }
+  saving(WeatherModel weatherModel)
   {
-    weatherService.save(weatherModel,helper);
+    databaseService.save(weatherModel);
+
   }
 }

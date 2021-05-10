@@ -1,12 +1,15 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:weather_flutter/Screens/CurrentWeather.dart';
+import 'package:weather_flutter/Screens/NetworkScreen.dart';
 import 'file:///D:/flutter/weather_flutter/lib/Screens/PreviouslyViewed.dart';
 import 'package:weather_flutter/Screens/SearchWeather.dart';
 import 'package:weather_flutter/bloc/weather_bloc.dart';
 import 'package:weather_flutter/model/PreviouslyViewedModel.dart';
 import 'package:weather_flutter/model/weather_model.dart';
+import 'package:weather_flutter/services/locator.dart';
 import 'package:weather_flutter/utils/database_helper.dart';
 class Home extends StatefulWidget {
   @override
@@ -19,7 +22,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home>
 {
-  DatabaseHelper databaseHelper = DatabaseHelper();
+  bool value=true;
+  var databaseHelper=locator<DatabaseHelper>();
   List<PreviouslyViewd> previousList;
   TextEditingController searchText=TextEditingController();
   Widget customSearchBar=Text("");
@@ -34,7 +38,8 @@ class _HomeState extends State<Home>
    cityText=city.text;
    city.addListener(() {
      print("text is $cityText");
-     weatherBloc.previousResult(cityText,databaseHelper);
+     weatherBloc.previousResulWeather(cityText);
+
    });
     });
   }
@@ -51,7 +56,7 @@ class _HomeState extends State<Home>
       init();
     }
 
-    return StreamBuilder(
+    return value?StreamBuilder(
         stream: weatherBloc.weather,
         builder: (context, AsyncSnapshot<WeatherModel> snapshot) {
           if (snapshot.hasData) {
@@ -61,15 +66,38 @@ class _HomeState extends State<Home>
           }
 
           return SearchWeather();
-        });
+        }):NetWorkScreen();
 
+  }
+
+
+  @override
+  void initState() {
+    chechStatus();
+    super.initState();
+  }
+
+  void chechStatus() {
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.wifi) {
+        changeValue(true);
+      } else {
+        changeValue(false);
+      }
+    });
+  }
+  void changeValue(bool ch) {
+    setState(() {
+      value=ch;
+    });
   }
 
   Scaffold _buildWeatherScreen(WeatherModel data, BuildContext context, Icon customIcon, AsyncSnapshot<WeatherModel> snapshot, int selectedItemIndex)
   {
-    final _tabs=[CurrentWeather(data,context,customIcon,snapshot,selectedItemIndex),Previous(databaseHelper)];
+    final _tabs=[CurrentWeather(data,context,customIcon,snapshot,selectedItemIndex),Previous()];
 
-    return Scaffold(
+    return value?Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
         index: 0,
@@ -92,14 +120,14 @@ class _HomeState extends State<Home>
       ),
       body:_tabs[_page]
 
-    );
+    ):NetWorkScreen();
 
   }
 
   void handleClick(String value) {
     switch (value) {
       case 'Previously viewed':
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Previous(databaseHelper)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Previous()));
         break;
       case 'Item 2':
         break;
@@ -112,6 +140,9 @@ class _HomeState extends State<Home>
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
 
   }
+
+
+
 
 
 }

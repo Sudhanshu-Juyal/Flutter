@@ -1,28 +1,32 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:weather_flutter/Screens/NetworkScreen.dart';
 import 'package:weather_flutter/bloc/PreviouslyViewedBloc.dart';
 import 'package:weather_flutter/bloc/weather_bloc.dart';
 import 'package:weather_flutter/model/PreviouslyViewedModel.dart';
+import 'package:weather_flutter/services/locator.dart';
 import 'package:weather_flutter/utils/database_helper.dart';
 
 import 'Home.dart';
-class Previous extends StatefulWidget {
-  DatabaseHelper helpeer;
-  Previous(this.helpeer);
+class Previous extends StatefulWidget
+{
+
 
   @override
-  _PreviousState createState() => _PreviousState(this.helpeer);
+  _PreviousState createState() => _PreviousState();
 }
 
 class _PreviousState extends State<Previous> {
-  DatabaseHelper helper;
-  _PreviousState(this.helper);
+  var helper=locator<DatabaseHelper>();
+  bool value=true;
+  //_PreviousState(this.helper);
   PreviouslyBloc prevBloc;
 
 
   @override
   Widget build(BuildContext context)
   {
-    return StreamBuilder(
+    return value?StreamBuilder(
         stream: prevBloc.allWeatherStream,
         builder: (context, AsyncSnapshot<List<PreviouslyViewd>> snapshot)
     {
@@ -39,14 +43,31 @@ class _PreviousState extends State<Previous> {
         return Container(child: Text(""),);
     }
 
-        );
+        ):NetWorkScreen();
 
   }
 
   @override
   void initState() {
-     prevBloc=PreviouslyBloc(helper);
+     prevBloc=PreviouslyBloc();
+     chechStatus();
+     super.initState();
 
+  }
+  void chechStatus() {
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.wifi) {
+        changeValue(true);
+      } else {
+        changeValue(false);
+      }
+    });
+  }
+  void changeValue(bool ch) {
+    setState(() {
+      value=ch;
+    });
   }
 
   Scaffold _buildWeatherScreen(List<PreviouslyViewd> data, BuildContext context) {
