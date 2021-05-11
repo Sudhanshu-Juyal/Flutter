@@ -56,17 +56,20 @@ class _HomeState extends State<Home>
       init();
     }
 
-    return StreamBuilder(
-        stream: weatherBloc.weather,
-        builder: (context, AsyncSnapshot<WeatherModel> snapshot) {
-          if (snapshot.hasData) {
-            return _buildWeatherScreen(snapshot.data,context,customIcon,snapshot,selectedItemIndex);
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
+    return WillPopScope(
+      onWillPop: () async =>value? true:false,
+      child: StreamBuilder(
+          stream: weatherBloc.weather,
+          builder: (context, AsyncSnapshot<WeatherModel> snapshot) {
+            if (snapshot.hasData) {
+              return _buildWeatherScreen(snapshot.data,context,customIcon,snapshot,selectedItemIndex);
+            } else if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
 
-          return SearchWeather();
-        });
+            return SearchWeather();
+          }),
+    );
 
   }
 

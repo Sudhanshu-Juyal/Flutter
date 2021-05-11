@@ -6,12 +6,9 @@ import 'package:weather_flutter/bloc/weather_bloc.dart';
 import 'package:weather_flutter/model/PreviouslyViewedModel.dart';
 import 'package:weather_flutter/services/locator.dart';
 import 'package:weather_flutter/utils/database_helper.dart';
-
 import 'Home.dart';
 class Previous extends StatefulWidget
 {
-
-
   @override
   _PreviousState createState() => _PreviousState();
 }
