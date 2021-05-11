@@ -26,7 +26,7 @@ class _PreviousState extends State<Previous> {
   @override
   Widget build(BuildContext context)
   {
-    return value?StreamBuilder(
+    return StreamBuilder(
         stream: prevBloc.allWeatherStream,
         builder: (context, AsyncSnapshot<List<PreviouslyViewd>> snapshot)
     {
@@ -43,7 +43,7 @@ class _PreviousState extends State<Previous> {
         return Container(child: Text(""),);
     }
 
-        ):NetWorkScreen();
+        );
 
   }
 
