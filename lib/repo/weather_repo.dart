@@ -28,10 +28,7 @@ class weatherRepo
 
       }
   }
-  // save(WeatherModel weatherModel,DatabaseHelper helper) async
-  // {
-  //   weatherService.save(weatherModel,helper);
-  // }
+
   saving(WeatherModel weatherModel)
   {
     databaseService.save(weatherModel);

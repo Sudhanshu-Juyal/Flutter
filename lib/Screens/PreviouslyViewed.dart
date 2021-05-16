@@ -1,4 +1,5 @@
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_flutter/Screens/NetworkScreen.dart';
 import 'package:weather_flutter/bloc/PreviouslyViewedBloc.dart';
@@ -69,9 +70,11 @@ class _PreviousState extends State<Previous> {
 
   Scaffold _buildWeatherScreen(List<PreviouslyViewd> data, BuildContext context) {
       return Scaffold(
+        backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(35.0),
           child: AppBar(
+
            backgroundColor: Colors.white,
             elevation: 0,
             brightness: Brightness.light,
@@ -94,26 +97,32 @@ class _PreviousState extends State<Previous> {
           ),
         ),
           body: Container(
-            color: Colors.white,
+
             child: Column(
               children: [
-                Text("Previously Viewed",style: TextStyle(color: Colors.black,fontSize: 20,fontFamily: 'Paci',fontWeight: FontWeight.w700),),
+
+                Text("Previously viewed",style: TextStyle(color: Colors.black,fontSize: 20,fontFamily: 'Paci',fontWeight: FontWeight.w900),),
+                SizedBox(height: 20,),
                 Expanded(
-                  child: ListView.builder(
+                  child: Container(
+                    margin: EdgeInsets.only(left: 15,right: 15),
+                    decoration: BoxDecoration(
+                      color: Color(0xfff9f9f9),
+                      borderRadius: BorderRadius.circular(25.0)
 
-                      itemCount: data.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                         elevation: 4.5,
-
-                          margin: EdgeInsets.fromLTRB(30, 15, 30, 5),
-                          color: Theme
-                              .of(context)
-                              .cardColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)
-                          ),
-                          child: Expanded(
+                    ),
+                    child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: data.length,
+                        itemBuilder: (context,index){
+                          return Card(
+                            elevation: 4.5,
+                            margin: EdgeInsets.fromLTRB(8, 15, 8, 20),
+                            color: Theme.of(context).cardColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)
+                            ),
                             child: Container(
                               decoration: BoxDecoration(
 
@@ -126,68 +135,77 @@ class _PreviousState extends State<Previous> {
 
 
                               ),
-                              height: 270,
+                              height:  MediaQuery.of(context).size.height*0.32,
                               width: double.infinity,
                               child: Column(
-                                children:
-                                [
-                                  Container(
-                                    child: Expanded(child:
-                                    Stack(
-                                      children: [
-                                        Container(
-                                          width: double.infinity,
-                                          height: 180.0,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                                              image: DecorationImage(
-                                                  image: AssetImage('assets/wee.jpg'),
-                                                  fit: BoxFit.cover),
-                                              ),
-                                          ),
-                                        Positioned(
-                                            top: 40,
-                                            left: 15,
-                                            child: Text(data[index].temp+"°",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w900,fontSize: 55,fontFamily: 'Paci'),)
-
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      Container(
+                                        width: double.infinity,
+                                        height: MediaQuery.of(context).size.height*0.22,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                          image: DecorationImage(
+                                              image: AssetImage('assets/wee.jpg'),
+                                              fit: BoxFit.cover),
                                         ),
-                                        Positioned(
-                                            top: 104,
-                                            left: 16,
-                                            child: Text(data[index].name.toString(),style: TextStyle(color: Colors.white,fontWeight: FontWeight.w800,fontSize: 30,fontFamily: 'Paci'),)
+                                      ),
+                                      Container(
+                                        height:  MediaQuery.of(context).size.height*0.2,
+                                        margin: EdgeInsets.only(left: 10),
+                                        child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+
+                                            Container(
+
+                                              width: double.infinity,
+                                              child: Text(data[index].temp+"°",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w900,fontSize: 55,fontFamily: 'Paci'),
+                                                textAlign: TextAlign.start,),
+                                            ),
+                                            Container(
+
+                                              width: double.infinity,
+                                              margin: EdgeInsets.only(left: 10),
+                                              child: Text(data[index].name,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w800,fontSize: 30,fontFamily: 'Paci'),
+                                                  textAlign: TextAlign.start
+                                                  ,),
+                                            ),
+
+                                          ],
                                         ),
+                                      )
 
-
-
-                                      ],
-
-                                    )),
+                                    ],
                                   ),
                                   Container(
+                                    margin: EdgeInsets.only(top: 5),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
-                                            margin: EdgeInsets.fromLTRB(20, 0, 0, 30),
+                                            margin: EdgeInsets.fromLTRB(30, 0, 0, 30),
                                             child: Text("Humidity: "+data[index].humidity+"%",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w800,fontFamily: 'Paci',fontSize: 18),)),
                                         Container(
-                                            margin: EdgeInsets.fromLTRB(0, 0, 50, 30),
-                                            child: Text(data[index].timezone.toString(),style: TextStyle(color: Colors.black,fontWeight: FontWeight.w900,fontFamily: 'Paci',fontSize: 20)))
+                                            margin: EdgeInsets.fromLTRB(0, 0, 30, 30),
+                                            child: Text("13/28°",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w900,fontFamily: 'Paci',fontSize: 20)))
                                       ],
                                     ),
                                   )
                                 ],
                               ),
                             ),
-                          )
 
-
-                        );
-                      }),
-                ),
+                          );
+                        }),
+                  ),
+                )
               ],
             ),
-          ));
+          ),
+      );
     }
     void handleClick(String value) {
       switch (value) {

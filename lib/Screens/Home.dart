@@ -12,6 +12,7 @@ import 'package:weather_flutter/model/weather_model.dart';
 import 'package:weather_flutter/services/locator.dart';
 import 'package:weather_flutter/utils/database_helper.dart';
 class Home extends StatefulWidget {
+
   @override
   _HomeState createState() => _HomeState();
 
@@ -64,6 +65,7 @@ class _HomeState extends State<Home>
             if (snapshot.hasData) {
               return _buildWeatherScreen(snapshot.data,context,customIcon,snapshot,selectedItemIndex);
             } else if (snapshot.hasError) {
+
               return Text(snapshot.error.toString());
             }
 
@@ -103,7 +105,7 @@ class _HomeState extends State<Home>
     return value?Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
-        index: 0,
+        index: _page,
         height: 50.0,
         items: <Widget>[
           Icon(Icons.add, size: 30,color: Color(0xff7340bf),),
@@ -111,15 +113,17 @@ class _HomeState extends State<Home>
         ],
         color: Colors.white,
         buttonBackgroundColor: Colors.white,
+
         backgroundColor: Colors.black,
         animationCurve: Curves.easeInOut,
         animationDuration: Duration(milliseconds: 1000),
         onTap: (index) {
           setState(() {
+
             _page = index;
           });
         },
-        letIndexChange: (index) => true,
+       letIndexChange: (index) => true,
       ),
       body:_tabs[_page]
 
